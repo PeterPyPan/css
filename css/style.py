@@ -37,3 +37,6 @@ class Style(object):
 
     def __str__(self):
         return self.get_string()
+
+    def items(self):
+        return self._style_dict.items()
