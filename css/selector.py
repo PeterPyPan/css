@@ -46,7 +46,7 @@ class Selector(object):
 
 class ElementSelector(Selector):
     def __init__(self, element_tag, class_tag=None, style=None):
-        super().__init__(style=style)
+        super(ElementSelector, self).__init__(style=style)
         self._element_tag = element_tag
         self._class_tag = class_tag
 
@@ -60,7 +60,7 @@ class ElementSelector(Selector):
 
 class ClassSelector(Selector):
     def __init__(self, class_tag, style=None):
-        super().__init__(style=style)
+        super(ClassSelector, self).__init__(style=style)
         self._class_tag = class_tag
 
     @property
@@ -70,7 +70,7 @@ class ClassSelector(Selector):
 
 class IdSelector(Selector):
     def __init__(self, id_tag, style=None):
-        super().__init__(style=style)
+        super(IdSelector, self).__init__(style=style)
         self._id_tag = id_tag
 
     @property
@@ -80,7 +80,7 @@ class IdSelector(Selector):
 
 class SelectorGroup(Selector):
     def __init__(self, selectors, style=None):
-        super().__init__(style=style)
+        super(SelectorGroup, self).__init__(style=style)
         self._selectors = selectors
 
     @property
