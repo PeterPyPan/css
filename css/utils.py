@@ -12,8 +12,8 @@ def tab_settings_spaces(tab_n=4):
     return TabSettings(use_spaces=True, tab_n=tab_n)
 
 
-def tab_settings_tabs():
-    return TabSettings(use_spaces=False, tab_n=1)
+def tab_settings_tabs(tab_n=1):
+    return TabSettings(use_spaces=False, tab_n=tab_n)
 
 
 class TabSettings(object):

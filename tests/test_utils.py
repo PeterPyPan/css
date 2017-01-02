@@ -41,6 +41,24 @@ class TestStyle(unittest.TestCase):
         self.assertEqual(ts.use_spaces, True)
         self.assertEqual(ts.use_tabs, False)
 
+    def tab_settings_tabs(self):
+        ts = utils.tab_settings_tabs()
+        self.assertEqual(ts.tab_n, 1)
+        self.assertEqual(ts.use_tabs, True)
+
+        ts = utils.tab_settings_tabs(tab_n=2)
+        self.assertEqual(ts.tab_n, 2)
+        self.assertEqual(ts.use_tabs, True)
+
+    def tab_settings_spaces(self):
+        ts = utils.tab_settings_spaces()
+        self.assertEqual(ts.tab_n, 4)
+        self.assertEqual(ts.use_spaces, True)
+
+        ts = utils.tab_settings_spaces(tab_n=8)
+        self.assertEqual(ts.tab_n, 8)
+        self.assertEqual(ts.use_spaces, True)
+
     def test_make_indent(self):
         self.assertEqual(utils.make_indent(), '    ')
         self.assertEqual(utils.make_indent(0), '')
