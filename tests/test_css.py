@@ -1,3 +1,5 @@
+import os
+import shutil
 import unittest
 from css import css
 from css import selector
@@ -5,10 +7,17 @@ from css import selector
 
 class TestStyle(unittest.TestCase):
     def setUp(self):
-        pass
+        self.original_path = os.getcwd()
+        self.dump_folder = '.\\dump_folder'
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
+        if os.path.isdir(self.dump_folder):
+            shutil.rmtree(self.dump_folder, ignore_errors=True)
+            os.mkdir(self.dump_folder)
+        else:
+            os.mkdir(self.dump_folder)
 
     def tearDown(self):
-        pass
+        os.chdir(self.original_path)
 
     def test_css_1(self):
         s1 = selector.create_class_selector('myclass')
@@ -72,6 +81,34 @@ class TestStyle(unittest.TestCase):
         self.assertEqual(str(s1), 'p.aclass {\n    color: red;\n}')
         self.assertEqual(str(s2), '.myclass {\n    color: blue;\n}')
         self.assertEqual(str(s3), '#myid {\n    color: black;\n}')
+
+    def test_css_write_1(self):
+        filepath = os.path.join(self.dump_folder, 'test1.css')
+
+        c = css.create_css()
+        c.add_element_selector('p', class_tag='aclass', style=[('color', 'red')])
+        c.add_class_selector('myclass', style=[('color', 'blue')])
+        c.add_id_selector('myid', style=[('color', 'black')])
+
+        css_string = str(c)
+        c.to_file(filepath)
+        with open(filepath) as fid:
+            read_string = fid.read()
+        self.assertEqual(css_string, read_string)
+
+    def test_css_write_2(self):
+        filepath = os.path.join(self.dump_folder, 'test2.css')
+
+        c = css.create_css()
+        c.add_element_selector('p', class_tag='aclass', style=[('color', 'red')])
+        c.add_class_selector('myclass', style=[('color', 'blue')])
+        c.add_id_selector('myid', style=[('color', 'black')])
+
+        css_string = str(c)
+        c.to_file(filepath)
+        with open(filepath) as fid:
+            read_string = fid.read()
+        self.assertEqual(css_string, read_string)
 
 
 if __name__ == 'main':

@@ -6,6 +6,10 @@ def create_css(selectors=None):
     return CSS(selectors=selectors)
 
 
+def write_css(css_object, filepath):
+    css_object.to_file(filepath)
+
+
 class CSS(object):
     def __init__(self, selectors=None):
         self._selectors = []
@@ -30,6 +34,10 @@ class CSS(object):
 
     def __str__(self):
         return self.get_string()
+
+    def to_file(self, filepath):
+        with open(filepath, 'wt') as fid:
+            fid.write(str(self))
 
     def add_element_selector(self, element_tag, class_tag=None, style=None):
         s = create_element_selector(element_tag, class_tag=class_tag, style=style)
