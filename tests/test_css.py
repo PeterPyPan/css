@@ -10,10 +10,10 @@ class TestStyle(unittest.TestCase):
         self.original_path = os.getcwd()
         self.dump_folder = '.\\dump_folder'
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
-        try:
-            os.mkdir(self.dump_folder)
-        except FileExistsError:
+        if os.path.isdir(self.dump_folder):
             shutil.rmtree(self.dump_folder, ignore_errors=True)
+            os.mkdir(self.dump_folder)
+        else:
             os.mkdir(self.dump_folder)
 
     def tearDown(self):
