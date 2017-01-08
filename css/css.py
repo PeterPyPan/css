@@ -1,13 +1,8 @@
 from .selector import Selector
-from .selector import create_element_selector, create_class_selector, create_id_selector, create_selector_group
 
 
 def create_css(selectors=None):
     return CSS(selectors=selectors)
-
-
-def write_css(css_object, filepath):
-    css_object.to_file(filepath)
 
 
 class CSS(object):
@@ -15,16 +10,16 @@ class CSS(object):
         self._selectors = []
         if selectors is None:
             selectors = []
-        self.add_selectors(selectors)
+        self.append_selectors(selectors)
 
-    def add_selector(self, selector):
+    def append_selector(self, selector):
         if not isinstance(selector, Selector):
             raise ValueError('An object of type Selector is expected.')
         self._selectors.append(selector)
 
-    def add_selectors(self, selectors):
+    def append_selectors(self, selectors):
         for selector in selectors:
-            self.add_selector(selector)
+            self.append_selector(selector)
 
     def get_string(self, indent=0, tab_settings=None):
         style_list = []
@@ -39,22 +34,10 @@ class CSS(object):
         with open(filepath, 'wt') as fid:
             fid.write(str(self))
 
-    def add_element_selector(self, element_tag, class_tag=None, style=None):
-        s = create_element_selector(element_tag, class_tag=class_tag, style=style)
-        self.add_selector(s)
-        return s
+    def add_selector(self, selectors=None, style=None):
+        if isinstance(selectors, Selector):
+            raise ValueError('Use the append_selector to append a Selector object')
 
-    def add_class_selector(self, class_tag, style=None):
-        s = create_class_selector(class_tag, style=style)
-        self.add_selector(s)
-        return s
-
-    def add_id_selector(self, id_tag, style=None):
-        s = create_id_selector(id_tag, style=style)
-        self.add_selector(s)
-        return s
-
-    def add_selector_group(self, selectors, style=None):
-        s = create_selector_group(selectors, style=style)
-        self.add_selector(s)
+        s = Selector(selectors, style)
+        self.append_selector(s)
         return s
