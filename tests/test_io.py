@@ -90,9 +90,10 @@ class TestIO(unittest.TestCase):
         self.assertEqual(expected, sel.get_string())
 
     def test_read_css(self):
-        css_object = io.read_css('.\\test_data\\css_test.css')
+        css_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_data', 'css_test.css')
+        css_object = io.read_css(css_file)
 
-        with open('.\\test_data\\css_test.css') as fid:
+        with open(css_file) as fid:
             read_string = fid.read()
         self.assertEqual(str(css_object), read_string)
 
