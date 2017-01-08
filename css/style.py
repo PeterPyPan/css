@@ -2,6 +2,10 @@ from collections import OrderedDict
 from .utils import make_indent
 
 
+def create_style(style_dict=None):
+    return Style(style_dict)
+
+
 class Style(object):
     def __init__(self, style_dict=None):
         self._style_dict = OrderedDict()
