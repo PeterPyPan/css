@@ -5,7 +5,7 @@ from css import css
 from css import io
 
 
-class TestStyle(unittest.TestCase):
+class TestIO(unittest.TestCase):
     def setUp(self):
         self.original_path = os.getcwd()
         self.dump_folder = '.\\dump_folder'
@@ -15,6 +15,7 @@ class TestStyle(unittest.TestCase):
             os.mkdir(self.dump_folder)
         else:
             os.mkdir(self.dump_folder)
+        self.maxDiff = None
 
     def tearDown(self):
         os.chdir(self.original_path)
@@ -46,6 +47,54 @@ class TestStyle(unittest.TestCase):
         with open(filepath) as fid:
             read_string = fid.read()
         self.assertEqual(css_string, read_string)
+
+    def test_style_from_string(self):
+        style_string = 'color: red;\ntext-align: center;'
+        st = io.style_from_string(style_string)
+        self.assertEqual(style_string, st.get_string())
+
+    def test_selector_from_string_1(self):
+        selector_string = 'p.class'
+        expected = 'p.class {\n}'
+        sel = io.selector_from_string(selector_string)
+        self.assertEqual(expected, sel.get_string())
+
+    def test_selector_from_string_2(self):
+        selector_string = ' \n\t\r p.class \n\t\r'
+        expected = 'p.class {\n}'
+        sel = io.selector_from_string(selector_string)
+        self.assertEqual(expected, sel.get_string())
+
+    def test_selector_from_string_3(self):
+        selector_string = 'p.class, #myid'
+        expected = 'p.class, #myid {\n}'
+        sel = io.selector_from_string(selector_string)
+        self.assertEqual(expected, sel.get_string())
+
+    def test_selector_from_string_4(self):
+        selector_string = 'p.class,#myid'
+        expected = 'p.class, #myid {\n}'
+        sel = io.selector_from_string(selector_string)
+        self.assertEqual(expected, sel.get_string())
+
+    def test_selector_from_string_5(self):
+        selector_string = ' \n\t\r p.class \n\t\r , \n\r\t #myid \n\t\r '
+        expected = 'p.class, #myid {\n}'
+        sel = io.selector_from_string(selector_string)
+        self.assertEqual(expected, sel.get_string())
+
+    def test_selector_from_string_6(self):
+        selector_string = 'p class'
+        expected = 'p class {\n}'
+        sel = io.selector_from_string(selector_string)
+        self.assertEqual(expected, sel.get_string())
+
+    def test_read_css(self):
+        css_object = io.read_css('.\\test_data\\css_test.css')
+
+        with open('.\\test_data\\css_test.css') as fid:
+            read_string = fid.read()
+        self.assertEqual(str(css_object), read_string)
 
 if __name__ == 'main':
     unittest.main()
